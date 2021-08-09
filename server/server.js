@@ -7,6 +7,7 @@ const express = require("express");
 const cors = require("cors");
 // const mongodbClient = require("mongodb").mongoClient;
 const connections = require("./DB");
+const path = require("path");
 const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -19,8 +20,12 @@ app.listen(PORT, () => {
   console.log(`server live on port: ${PORT}`);
 });
 
-app.get("/", (req, res) => {
-  res.send("server live on port: 8080");
-});
+app.use("/api/Students", studentRouter);
 
-app.use("/Students", studentRouter);
+if (process.env.NODE_ENV === "production") {
+  app.use(express.static(path.join(__dirname, "../client/build")));
+
+  app.get("*", (req, res) => {
+    res.sendFile(path.join(__dirname, "../client/build", "index.html"));
+  });
+}
