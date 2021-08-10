@@ -38,20 +38,6 @@ async function createNewStudent(req, res) {
 }
 ///////////////////////delete//////////////////////////////
 
-// async function deleteStudent(req, res) {
-//   try {
-//     await studentModel.findByIdAndDelete(
-//      mongodb.ObjectID( req.params.student.id),
-//       (error, result) => {
-//         if (error) throw error;
-//         res.json({});
-//       }
-//     );
-//   } catch (err) {
-//     res.json({ massage: "database problem", error: err });
-//   }
-// }
-
 async function deleteStudent(req, res) {
   try {
     await studentModel.findOneAndDelete(
@@ -66,23 +52,6 @@ async function deleteStudent(req, res) {
   }
 }
 /////////////////////////////update/////////////////////////
-// async function updateStudent(req, res) {
-//   try {
-//     await studentModel.findByIdAndUpdate(
-//       req.body.student.id,
-//       req.body.student,
-//       (error, result) => {
-//         if (error) throw error;
-//         res.json({
-//           masssage: `${req.body.student.firstName} success,added successfully`,
-//           data: req.body.student,
-//         });
-//       }
-//     );
-//   } catch (err) {
-//     res.json({ massage: "database problem", error: err });
-//   }
-// }
 
 async function updateStudent(req, res) {
   try {
