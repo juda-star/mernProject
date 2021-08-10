@@ -1,4 +1,5 @@
 const studentModel = require("../Models/studentModels");
+const { ObjectId } = require("mongodb");
 /////////////////getAll////////////////////////////////
 async function getAllStudent(req, res) {
   try {
@@ -25,35 +26,61 @@ async function createNewStudent(req, res) {
   }
 }
 ///////////////////////delete//////////////////////////////
+
+// async function deleteStudent(req, res) {
+//   try {
+//     await studentModel.findByIdAndDelete(
+//      mongodb.ObjectID( req.params.student.id),
+//       (error, result) => {
+//         if (error) throw error;
+//         res.json({});
+//       }
+//     );
+//   } catch (err) {
+//     res.json({ massage: "database problem", error: err });
+//   }
+// }
+
 async function deleteStudent(req, res) {
   try {
-    await studentModel.findByIdAndDelete(
-      req.params.student.id,
+    await studentModel.findOneAndDelete(
+      { _id: ObjectId(req.params._id) },
       (error, result) => {
         if (error) throw error;
-        res.json({});
+        res.json({ massage: "Success", data: result });
       }
     );
-  } catch (err) {
-    res.json({ massage: "database problem", error: err });
+  } catch (error) {
+    res.json({ massage: "DataBase Problem", error: error });
   }
 }
 /////////////////////////////update/////////////////////////
-async function updateStudent(req, res) {
+// async function updateStudent(req, res) {
+//   try {
+//     await studentModel.findByIdAndUpdate(
+//       req.body.student.id,
+//       req.body.student,
+//       (error, result) => {
+//         if (error) throw error;
+//         res.json({
+//           masssage: `${req.body.student.firstName} success,added successfully`,
+//           data: req.body.student,
+//         });
+//       }
+//     );
+//   } catch (err) {
+//     res.json({ massage: "database problem", error: err });
+//   }
+// }
+
+async function updateStudent(req,res) {
   try {
-    await studentModel.findByIdAndUpdate(
-      req.body.student.id,
-      req.body.student,
-      (error, result) => {
-        if (error) throw error;
-        res.json({
-          masssage: `${req.body.student.firstName} success,added successfully`,
-          data: req.body.student,
-        });
-      }
-    );
-  } catch (err) {
-    res.json({ massage: "database problem", error: err });
+      studentModel.findByIdAndUpdate({_id:ObjectId(req.params._id)} ,{$set:req.body.student},(error,result)=>{
+          if(error) throw error;
+          res.json({massage:'Success', data:result})
+      });
+  } catch (error) {
+      res.json({massage:'DataBase Problem', error:error})
   }
 }
 ////////////////////update///////////////////////////////
