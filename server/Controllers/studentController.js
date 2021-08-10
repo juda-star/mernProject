@@ -1,4 +1,5 @@
 const studentModel = require("../Models/studentModels");
+const { ObjectId } = require("mongodb");
 /////////////////getAll////////////////////////////////
 async function getAllStudent(req, res) {
   try {
@@ -8,6 +9,17 @@ async function getAllStudent(req, res) {
     });
   } catch (err) {
     res.json({ massage: "database problem", error: err });
+  }
+}
+/////////////////////////////get by id ///////////////////////////
+async function getStudentById(req,res){
+  try {
+      await studentModel.findById({_id:ObjectId(req.params._id)},(error,result)=>{
+          if(error) throw error;
+          res.json({massage:'succses',data:result})
+      })
+  } catch (error) {
+      res.json({massage:'DataBase Problem', error:error})
   }
 }
 /////////////////////////////add////////////////////////////////
@@ -25,35 +37,34 @@ async function createNewStudent(req, res) {
   }
 }
 ///////////////////////delete//////////////////////////////
+
 async function deleteStudent(req, res) {
   try {
-    await studentModel.findByIdAndDelete(
-      req.params.student.id,
+    await studentModel.findOneAndDelete(
+      { _id: ObjectId(req.params._id) },
       (error, result) => {
         if (error) throw error;
-        res.json({});
+        res.json({ massage: "Success", data: result });
       }
     );
-  } catch (err) {
-    res.json({ massage: "database problem", error: err });
+  } catch (error) {
+    res.json({ massage: "DataBase Problem", error: error });
   }
 }
 /////////////////////////////update/////////////////////////
+
 async function updateStudent(req, res) {
   try {
-    await studentModel.findByIdAndUpdate(
-      req.body.student.id,
-      req.body.student,
+    studentModel.findByIdAndUpdate(
+      { _id: ObjectId(req.params._id) },
+      { $set: req.body.student },
       (error, result) => {
         if (error) throw error;
-        res.json({
-          masssage: `${req.body.student.firstName} success,added successfully`,
-          data: req.body.student,
-        });
+        res.json({ massage: "Success", data: result });
       }
     );
-  } catch (err) {
-    res.json({ massage: "database problem", error: err });
+  } catch (error) {
+    res.json({ massage: "DataBase Problem", error: error });
   }
 }
 ////////////////////update///////////////////////////////
@@ -63,4 +74,5 @@ module.exports = {
   createNewStudent,
   deleteStudent,
   updateStudent,
+  getStudentById
 };
