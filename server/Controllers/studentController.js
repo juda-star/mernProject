@@ -36,6 +36,9 @@ async function createNewStudent(req, res) {
     res.json({ massage: "database problem", error: err });
   }
 }
+///////insert into database/////////////////////////////////////
+
+
 ///////////////////////delete//////////////////////////////
 
 async function deleteStudent(req, res) {
