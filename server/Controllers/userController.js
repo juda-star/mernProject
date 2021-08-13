@@ -26,4 +26,5 @@ await studentModel.findOne({email:require.body.studentModel.email},(err,student)
     
 }
 module.exports={
+    register
 }
